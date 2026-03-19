@@ -2,142 +2,185 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Nossa História 💖</title>
+<title>Nós duas 💖</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ffc0cb, #8b0000);
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, #ffc0cb, #8b0000);
     color: white;
-    text-align: center;
+    scroll-behavior: smooth;
 }
 
-/* MENU */
-.menu {
+nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(0,0,0,0.3);
     display: flex;
     justify-content: center;
     gap: 20px;
-    background: rgba(0,0,0,0.2);
     padding: 15px;
+    backdrop-filter: blur(10px);
 }
 
-.menu button {
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+section {
+    min-height: 100vh;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.botao {
     background: white;
     color: #8b0000;
-    border: none;
-    padding: 10px 20px;
+    padding: 15px 30px;
+    border-radius: 30px;
     cursor: pointer;
-    border-radius: 20px;
-    font-weight: bold;
-}
-
-/* SEÇÕES */
-.section {
-    display: none;
-    padding: 40px;
-}
-
-.active {
-    display: block;
+    border: none;
 }
 
 /* GALERIA */
 .galeria {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 15px;
     padding: 20px;
 }
 
 .foto {
-    background: rgba(255,255,255,0.3);
-    height: 150px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-/* BOTÃO MÚSICA */
-.music-btn {
-    margin-top: 30px;
-    background: white;
-    color: #8b0000;
-    padding: 15px 25px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 16px;
+.foto:hover {
+    transform: scale(1.05);
+}
+
+/* MODAL (abrir foto) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 20px;
+}
+
+/* CORAÇÕES */
+.coracao {
+    position: fixed;
+    animation: subir 5s linear infinite;
+}
+
+@keyframes subir {
+    0% { transform: translateY(100vh); opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<h1>💖 Nós duas 💖</h1>
-<p>3 anos de amor ✈️🚗🌈</p>
+<nav>
+    <a href="#inicio">Início</a>
+    <a href="#historia">História</a>
+    <a href="#fotos">Fotos</a>
+    <a href="#carta">Carta</a>
+</nav>
 
-<div class="menu">
-    <button onclick="mostrar('home')">Início</button>
-    <button onclick="mostrar('historia')">Nossa História</button>
-    <button onclick="mostrar('fotos')">Fotos</button>
-    <button onclick="mostrar('carta')">Carta</button>
-</div>
-
-<!-- INÍCIO -->
-<div id="home" class="section active">
-    <h2>Bem-vinda ao nosso cantinho 💕</h2>
-    <p>Clique abaixo para começar nossa música</p>
-
-    <button class="music-btn" onclick="tocarMusica()">▶️ Tocar Música</button>
+<section id="inicio">
+    <h1>💖 Nós duas 💖</h1>
+    <p>3 anos de amor ✈️🚗🌈</p>
+    <button class="botao" onclick="tocarMusica()">▶️ Tocar Música</button>
 
     <audio id="musica">
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
-</div>
+</section>
 
-<!-- HISTÓRIA -->
-<div id="historia" class="section">
-    <h2>Nossa História 💖</h2>
-    <p>✨ Aqui você escreve como tudo começou...</p>
-    <p>✈️ Nossa primeira viagem...</p>
-    <p>🚗 Momentos inesquecíveis...</p>
-</div>
+<section id="historia">
+    <h2>Nossa História 💕</h2>
+    <p>Escreva aqui como tudo começou...</p>
+</section>
 
-<!-- FOTOS -->
-<div id="fotos" class="section">
+<section id="fotos">
     <h2>Nossas Fotos 📸</h2>
+    <div class="galeria" id="galeria"></div>
+</section>
 
-    <div class="galeria">
-        <div class="foto">Adicionar foto</div>
-        <div class="foto">Adicionar foto</div>
-        <div class="foto">Adicionar foto</div>
-        <div class="foto">Adicionar foto</div>
-        <div class="foto">Adicionar foto</div>
-        <div class="foto">Adicionar foto</div>
-    </div>
-</div>
+<section id="carta">
+    <h2>💌 Para você</h2>
+    <p>Escreva aqui sua carta especial...</p>
+</section>
 
-<!-- CARTA -->
-<div id="carta" class="section">
-    <h2>Uma carta pra você 💌</h2>
-    <p>
-        Escreva aqui algo bem especial pra ela... 💕<br><br>
-        Pode ser tudo que você sente nesses 3 anos ❤️
-    </p>
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="fecharModal()">
+    <img id="imgModal">
 </div>
 
 <script>
-function mostrar(secao) {
-    document.querySelectorAll('.section').forEach(div => {
-        div.classList.remove('active');
-    });
-    document.getElementById(secao).classList.add('active');
-}
-
 function tocarMusica() {
     document.getElementById("musica").play();
 }
+
+/* CARREGAR FOTOS AUTOMATICAMENTE */
+const galeria = document.getElementById("galeria");
+
+for (let i = 1; i <= 47; i++) {
+    let img = document.createElement("img");
+    img.src = `fotos/foto (${i}).jpg`;
+    img.className = "foto";
+    img.onclick = () => abrirModal(img.src);
+    galeria.appendChild(img);
+}
+
+/* MODAL */
+function abrirModal(src) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("imgModal").src = src;
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+/* CORAÇÕES */
+setInterval(() => {
+    let coracao = document.createElement("div");
+    coracao.classList.add("coracao");
+    coracao.innerHTML = "💖";
+    coracao.style.left = Math.random() * 100 + "vw";
+    coracao.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(coracao);
+
+    setTimeout(() => {
+        coracao.remove();
+    }, 5000);
+}, 400);
 </script>
 
 </body>
