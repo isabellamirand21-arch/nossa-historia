@@ -8,97 +8,100 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(180deg, #ffc0cb, #8b0000);
-    color: white;
-    scroll-behavior: smooth;
+    background: linear-gradient(135deg, #ff9aa2, #ffdde1);
+    color: #333;
 }
 
+/* NAV */
 nav {
     position: fixed;
     width: 100%;
     top: 0;
-    background: rgba(0,0,0,0.3);
     display: flex;
     justify-content: center;
     gap: 20px;
     padding: 15px;
+    background: rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
 }
 
 nav a {
-    color: white;
     text-decoration: none;
+    color: #333;
     font-weight: bold;
-    background: rgba(255,255,255,0.2);
-    padding: 10px 20px;
-    border-radius: 20px;
 }
 
+/* SECTIONS */
 section {
     min-height: 100vh;
-    padding: 100px 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
 }
 
+/* CARD CENTRAL */
+.card {
+    background: rgba(255,255,255,0.4);
+    padding: 40px;
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    text-align: center;
+    max-width: 500px;
+}
+
+/* BOTÃO */
 .botao {
-    background: white;
-    color: #8b0000;
+    margin-top: 20px;
     padding: 15px 30px;
-    border-radius: 30px;
-    cursor: pointer;
     border: none;
+    border-radius: 30px;
+    background: #ff6b81;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 /* GALERIA */
 .galeria {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 15px;
-    padding: 20px;
+    width: 90%;
 }
 
 .foto {
     width: 100%;
-    height: 220px;
+    height: 250px;
     object-fit: cover;
     border-radius: 20px;
     transition: 0.3s;
-    cursor: pointer;
 }
 
 .foto:hover {
     transform: scale(1.05);
 }
 
-/* MODAL (abrir foto) */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal img {
-    max-width: 90%;
-    max-height: 90%;
+/* CARTA */
+.carta {
+    max-width: 600px;
+    background: white;
+    padding: 30px;
     border-radius: 20px;
+    line-height: 1.6;
 }
 
-/* CORAÇÕES */
-.coracao {
-    position: fixed;
-    animation: subir 5s linear infinite;
+/* ANIMAÇÃO */
+.fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1s;
 }
 
-@keyframes subir {
-    0% { transform: translateY(100vh); opacity: 1; }
-    100% { transform: translateY(-10vh); opacity: 0; }
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 </head>
@@ -113,74 +116,64 @@ section {
 </nav>
 
 <section id="inicio">
-    <h1>💖 Nós duas 💖</h1>
-    <p>3 anos de amor ✈️🚗🌈</p>
-    <button class="botao" onclick="tocarMusica()">▶️ Tocar Música</button>
-
-    <audio id="musica">
-        <source src="musica.mp3" type="audio/mpeg">
-    </audio>
+    <div class="card fade">
+        <h1>💖 Nós duas 💖</h1>
+        <p>3 anos de amor ✨</p>
+        <button class="botao" onclick="tocarMusica()">▶️ Tocar Música</button>
+        <audio id="musica">
+            <source src="musica.mp3">
+        </audio>
+    </div>
 </section>
 
 <section id="historia">
-    <h2>Nossa História 💕</h2>
-    <p>Escreva aqui como tudo começou...</p>
+    <div class="card fade">
+        <h2>Nossa História</h2>
+        <p>Escreva aqui o começo de tudo...</p>
+    </div>
 </section>
 
 <section id="fotos">
-    <h2>Nossas Fotos 📸</h2>
+    <h2>Nossos Momentos</h2>
     <div class="galeria" id="galeria"></div>
 </section>
 
 <section id="carta">
-    <h2>💌 Para você</h2>
-    <p>Escreva aqui sua carta especial...</p>
+    <div class="carta fade">
+        <h2>💌 Para você</h2>
+        <p>
+        Escreva aqui sua carta especial...
+        </p>
+    </div>
 </section>
-
-<!-- MODAL -->
-<div class="modal" id="modal" onclick="fecharModal()">
-    <img id="imgModal">
-</div>
 
 <script>
 function tocarMusica() {
     document.getElementById("musica").play();
 }
 
-/* CARREGAR FOTOS AUTOMATICAMENTE */
+/* CARREGAR FOTOS */
 const galeria = document.getElementById("galeria");
 
 for (let i = 1; i <= 47; i++) {
     let img = document.createElement("img");
     img.src = `fotos/foto (${i}).jpg`;
-    img.className = "foto";
-    img.onclick = () => abrirModal(img.src);
+    img.className = "foto fade";
     galeria.appendChild(img);
 }
 
-/* MODAL */
-function abrirModal(src) {
-    document.getElementById("modal").style.display = "flex";
-    document.getElementById("imgModal").src = src;
+/* ANIMAÇÃO AO ROLAR */
+function animar() {
+    document.querySelectorAll('.fade').forEach(el => {
+        let top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 50) {
+            el.classList.add('show');
+        }
+    });
 }
 
-function fecharModal() {
-    document.getElementById("modal").style.display = "none";
-}
-
-/* CORAÇÕES */
-setInterval(() => {
-    let coracao = document.createElement("div");
-    coracao.classList.add("coracao");
-    coracao.innerHTML = "💖";
-    coracao.style.left = Math.random() * 100 + "vw";
-    coracao.style.fontSize = Math.random() * 20 + 10 + "px";
-    document.body.appendChild(coracao);
-
-    setTimeout(() => {
-        coracao.remove();
-    }, 5000);
-}, 400);
+window.addEventListener('scroll', animar);
+animar();
 </script>
 
 </body>
